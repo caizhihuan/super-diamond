@@ -1,4 +1,6 @@
-CREATE DATABASE edu_diamond;
+CREATE DATABASE edu_diamond  DEFAULT CHARACTER SET utf8 COLLATE utf8_bin ;
+
+use edu_diamond;
 
 CREATE TABLE `conf_user` (
   `ID` int(11) NOT NULL,
