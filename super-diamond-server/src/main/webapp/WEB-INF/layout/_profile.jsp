@@ -85,7 +85,8 @@
     	totalPages: <c:out value="${totalPages}"/>,
         currentPage: <c:out value="${currentPage}"/>,
         pageUrl: function(type, page, current){
-            return "/superdiamond/profile/<c:out value="${type}"/>/<c:out value="${projectId}"/>?page="+page;
+			var moduleId="<c:out value="${moduleId}"/>";
+            return "/superdiamond/profile/<c:out value="${type}"/>/<c:out value="${projectId}"/>?page="+page+"&moduleId="+moduleId;
         }
     }
     $('#paginator').bootstrapPaginator(options);
