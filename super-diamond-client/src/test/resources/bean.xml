@@ -8,7 +8,7 @@
 	</bean>
 	
 	<bean id="propertiesConfiguration" class="com.github.diamond.client.PropertiesConfigurationFactoryBean">
-		<constructor-arg index="0" value="localhost" />
+		<constructor-arg index="0" value="192.168.1.178" />
 		<constructor-arg index="1" value="8283" />
 		<constructor-arg index="2" value="test" />
 		<constructor-arg index="3" value="development" />

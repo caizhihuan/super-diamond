@@ -141,10 +141,10 @@ public class ProjectService {
 	
 	@Transactional
 	public void saveUser(long projectId, long userId, String development, String test, String build, String production, String admin) {
-		String sql = "insert into conf_project_USER (PROJ_ID, USER_ID) values (?, ?)";
+		String sql = "insert into conf_project_user (PROJ_ID, USER_ID) values (?, ?)";
 		jdbcTemplate.update(sql, projectId, userId);
 		
-		sql = "insert into conf_project_USER_ROLE (PROJ_ID, USER_ID, ROLE_CODE) values (?, ?, ?)";
+		sql = "insert into conf_project_user_role (PROJ_ID, USER_ID, ROLE_CODE) values (?, ?, ?)";
 		if(StringUtils.isNotBlank(admin)) {
 			jdbcTemplate.update(sql, projectId, userId, "admin");
 			//如果拥有admin权限，自动添加development、test、build、production
@@ -169,9 +169,9 @@ public class ProjectService {
 	
 	@Transactional
 	public void deleteUser(long projectId, long userId) {
-		String sql = "delete from conf_project_USER_ROLE where PROJ_ID = ? and USER_ID = ?";
+		String sql = "delete from conf_project_user_role where PROJ_ID = ? and USER_ID = ?";
 		jdbcTemplate.update(sql, projectId, userId);
-		sql = "delete from conf_project_USER where PROJ_ID = ? and USER_ID = ?";
+		sql = "delete from conf_project_user where PROJ_ID = ? and USER_ID = ?";
 		jdbcTemplate.update(sql, projectId, userId);
 	}
 	
@@ -182,7 +182,7 @@ public class ProjectService {
 	 */
 	public List<Project> queryProjectForUser(User user, int offset, int limit) {
 		if("admin".equals(user.getUserCode())) {
-			String sql = "SELECT distinct b.ID, b.PROJ_CODE, b.PROJ_NAME FROM conf_project_USER a, conf_project b " +
+			String sql = "SELECT distinct b.ID, b.PROJ_CODE, b.PROJ_NAME FROM conf_project_user a, conf_project b " +
 					"WHERE a.PROJ_ID = b.ID AND b.DELETE_FLAG = 0 order by b.ID desc limit ?, ?";
 			List<Project> projects = jdbcTemplate.query(sql, new RowMapper<Project>() {
 	
@@ -197,7 +197,7 @@ public class ProjectService {
 			}, offset, limit);
 			return projects;
 		} else {
-			String sql = "SELECT distinct b.ID, b.PROJ_CODE, b.PROJ_NAME FROM conf_project_USER a, conf_project b " +
+			String sql = "SELECT distinct b.ID, b.PROJ_CODE, b.PROJ_NAME FROM conf_project_user a, conf_project b " +
 					"WHERE a.PROJ_ID = b.ID and a.USER_ID=? AND b.DELETE_FLAG = 0 order by b.ID desc limit ?, ?";
 			List<Project> projects = jdbcTemplate.query(sql, new RowMapper<Project>() {
 	
@@ -221,11 +221,11 @@ public class ProjectService {
 	 */
 	public long queryProjectCountForUser(User user) {
 		if("admin".equals(user.getUserCode())) {
-			String sql = "select count(*) from (SELECT distinct b.ID FROM conf_project_USER a, conf_project b " +
+			String sql = "select count(*) from (SELECT distinct b.ID FROM conf_project_user a, conf_project b " +
 					"WHERE a.PROJ_ID = b.ID AND b.DELETE_FLAG = 0) as proj";
 			return jdbcTemplate.queryForObject(sql, Long.class);
 		} else {
-			String sql = "select count(*) from (SELECT distinct b.ID FROM conf_project_USER a, conf_project b " +
+			String sql = "select count(*) from (SELECT distinct b.ID FROM conf_project_user a, conf_project b " +
 					"WHERE a.PROJ_ID = b.ID and a.USER_ID=? AND b.DELETE_FLAG = 0) as proj";
 			return jdbcTemplate.queryForObject(sql, Long.class, user.getId());
 		}
