@@ -56,7 +56,7 @@
     				<select class="input-xxlarge" name="moduleId" id="config-moduleId">
 						<option value="">请选择...</option>
 						<c:forEach items="${modules}" var="module">
-							<option value='<c:out value="${module.MODULE_ID}"/	>'><c:out value="${module.MODULE_NAME}"/></option>
+							<option value='<c:out value="${module.MODULE_ID}"/>'><c:out value="${module.MODULE_NAME}"/></option>
 						</c:forEach>
 					</select>
     			</div>
