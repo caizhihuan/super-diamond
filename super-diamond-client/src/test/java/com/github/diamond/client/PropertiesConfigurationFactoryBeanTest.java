@@ -1,6 +1,6 @@
-/**        
- * Copyright (c) 2013 by 苏州科大国创信息技术有限公司.    
- */    
+/**
+ * Copyright (c) 2013 by 苏州科大国创信息技术有限公司.
+ */
 package com.github.diamond.client;
 
 import java.io.IOException;
@@ -17,20 +17,24 @@ import com.github.diamond.client.event.ConfigurationListener;
  * @author bsli@ustcinfo.com
  */
 public class PropertiesConfigurationFactoryBeanTest {
-	
-	public static void main(String[] args) throws IOException {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("bean.xml");
-		
-		PropertiesConfiguration configuration = PropertiesConfigurationFactoryBean.getPropertiesConfiguration();
-		configuration.addConfigurationListener(new ConfigurationListener() {
-	        @Override
-	        public void configurationChanged(ConfigurationEvent event) {
-	                            //监听配置参数变化,监听不到?
-	            System.out.println(event.getType().name() + " " + event.getPropertyName() + " " + event.getPropertyValue());
-	        }
-	    });
-		
-		System.in.read();
-	}
+
+    public static void main(String[] args) throws IOException {
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("bean.xml");
+
+        PropertiesConfiguration configuration = PropertiesConfigurationFactoryBean.getPropertiesConfiguration();
+        System.out.print(configuration.getString("mysql.url"));
+
+        //PropertiesConfiguration configuration = applicationContext.getBean(PropertiesConfiguration.class);
+        configuration.addConfigurationListener(new ConfigurationListener() {
+            @Override
+            public void configurationChanged(ConfigurationEvent event) {
+                //监听配置参数变化,监听不到?
+                System.out.print("like");
+                System.out.println(event.getType().name() + " " + event.getPropertyName() + " " + event.getPropertyValue());
+            }
+        });
+
+        System.in.read();
+    }
 
 }

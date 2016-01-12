@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-		<property name="properties" ref="propertiesConfiguration" />
-	</bean>
-	
-	<bean id="propertiesConfiguration" class="com.github.diamond.client.PropertiesConfigurationFactoryBean">
-		<constructor-arg index="0" value="192.168.1.178" />
-		<constructor-arg index="1" value="8283" />
-		<constructor-arg index="2" value="test" />
-		<constructor-arg index="3" value="development" />
-	</bean>
-	
-	<bean class="com.github.diamond.client.DatasourceTest">
-		<property name="url" value="${jdbc.url}" />
-	</bean>
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="properties" ref="propertiesConfiguration"/>
+    </bean>
+
+    <!--
+    -Dsuperdiamond.projcode=member
+-Dsuperdiamond.profile=development
+-Dsuperdiamond.host=192.168.1.211
+-Dsuperdiamond.port=38283
+-Dsuperdiamond.modules=database,data-cache,common-cache,dubbo,message-quene,basics
+    -->
+
+    <bean id="propertiesConfiguration" class="com.github.diamond.client.PropertiesConfigurationFactoryBean">
+        <!--<property name="projCode" value="member"/>-->
+        <!--<property name="profile" value="development"/>-->
+        <!--<property name="host" value="192.168.1.211"/>-->
+        <!--<property name="port" value="38283"/>-->
+        <!--<property name="modules" value="database,data-cache,common-cache,dubbo,message-quene,basics"/>-->
+        <constructor-arg index="0" value="192.168.1.178"/>
+        <constructor-arg index="1" value="8283"/>
+        <constructor-arg index="2" value="member"/>
+        <constructor-arg index="3" value="development"/>
+        <constructor-arg index="4" value="database,data-cache,common-cache,dubbo,message-quene,basics"/>
+    </bean>
+
+    <bean class="com.github.diamond.client.DatasourceTest">
+        <property name="url" value="${mysql.url}"/>
+    </bean>
 </beans>
