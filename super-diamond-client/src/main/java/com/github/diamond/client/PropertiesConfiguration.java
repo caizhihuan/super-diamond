@@ -3,6 +3,23 @@
  */
 package com.github.diamond.client;
 
+import com.github.diamond.client.config.ConfigurationInterpolator;
+import com.github.diamond.client.config.PropertiesReader;
+import com.github.diamond.client.config.PropertyConverter;
+import com.github.diamond.client.event.EventSource;
+import com.github.diamond.client.event.EventType;
+import com.github.diamond.client.netty.ClientChannelInitializer;
+import com.github.diamond.client.netty.Netty4Client;
+import com.github.diamond.client.util.FileUtils;
+import com.github.diamond.client.util.NamedThreadFactory;
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.text.StrLookup;
+import org.apache.commons.lang.text.StrSubstitutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -14,26 +31,6 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import com.sun.javafx.binding.StringFormatter;
-import io.netty.util.internal.StringUtil;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrLookup;
-import org.apache.commons.lang.text.StrSubstitutor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
-
-import com.github.diamond.client.config.ConfigurationInterpolator;
-import com.github.diamond.client.config.PropertiesReader;
-import com.github.diamond.client.config.PropertyConverter;
-import com.github.diamond.client.event.EventSource;
-import com.github.diamond.client.event.EventType;
-import com.github.diamond.client.netty.ClientChannelInitializer;
-import com.github.diamond.client.netty.Netty4Client;
-import com.github.diamond.client.util.FileUtils;
-import com.github.diamond.client.util.NamedThreadFactory;
 
 /**
  * Create on @2013-8-25 @下午1:17:38
@@ -64,7 +61,6 @@ public class PropertiesConfiguration extends EventSource {
 
     /**
      * 从jvm参数中获取 projCode、profile、host和port值
-     *
      */
     public PropertiesConfiguration() {
         _host = getHost();
@@ -140,8 +136,10 @@ public class PropertiesConfiguration extends EventSource {
             LOGGER.info(MessageFormat.format("未配置 modules 属性,获取 {1} 下所有配置", new Object[]{projCode}));
         }
 
+        String module = modules == null ? "" : modules;
+
         final String clientMsg = "superdiamond={\"projCode\": \"" + projCode + "\", \"profile\": \"" + profile + "\", "
-                + "\"modules\": \"" + modules == null ? "" : modules + "\", \"version\": \"1.1.0\"}";
+                + "\"modules\": \"" + module + "\", \"version\": \"1.1.0\"}";
         try {
             client = new Netty4Client(host, port, new ClientChannelInitializer(clientMsg));
 
